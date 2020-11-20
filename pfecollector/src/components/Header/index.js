@@ -3,6 +3,8 @@ import { Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
 import { NavLink, Link } from "react-router-dom";
 import {  useSelector , useDispatch} from 'react-redux'
 import { signout } from '../../actions'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSignInAlt } from '@fortawesome/free-solid-svg-icons'
 const Header = (props) => {
     const auth = useSelector(state => state.auth)
     const dispatch = useDispatch();
@@ -15,7 +17,7 @@ const Header = (props) => {
       <Nav>
         <li className="nav-item">
           <span  className="nav-link" onClick={logout}>
-            Signout
+            <FontAwesomeIcon icon={faSignInAlt} size='lg' />
           </span>
         </li>
 
@@ -27,13 +29,13 @@ const Header = (props) => {
       <Nav>
         <li className="nav-item">
           <NavLink to="signin" className="nav-link">
-            Signin
+            Login
           </NavLink>
         </li>
 
         <li className="nav-item">
           <NavLink to="signup" className="nav-link">
-            signup
+            Register
           </NavLink>
         </li>
       </Nav>
@@ -45,7 +47,7 @@ const Header = (props) => {
       expand="lg"
       bg="dark"
       variant="dark"
-      style={{ zIndex: "1" }}
+      style={{ zIndex: "1" , position : 'fixed' , width : '100%' , top : '0' , right : '0' }}
     >
       <Container fluid>
         <Link to="/" className="navbar-brand">

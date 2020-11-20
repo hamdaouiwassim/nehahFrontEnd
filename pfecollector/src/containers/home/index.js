@@ -1,21 +1,14 @@
 import React from 'react'
-import { Navbar , Nav ,Container , Jumbotron , Row , Col  } from 'react-bootstrap'
+
 import Layout from '../../components/Layout/index'
 import './style.css'
+
 const Home =  (props) => {
     return (
        
                   
-                            <Layout>
-                                <Container fluid>      
-                                        <Row>
-                                            <Col md={2} className="sidebar">Side bar
-                                            </Col>
-                                            
-                                            <Col md={10} style={{ marginLeft: 'auto' }}>Container
-                                            </Col>
-                                        </Row>
-                                </Container>
+                            <Layout sidebar>
+                           
                                 {/* <Jumbotron style={{ margin: '5em' , background: '#fff' }} className="text-center">
                                     <h1>Welcome Administration Panel </h1>
                                     <p>
