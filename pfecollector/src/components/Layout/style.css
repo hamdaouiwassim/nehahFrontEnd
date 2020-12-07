@@ -4,9 +4,9 @@
 
 }
 .sidebar ul li {
-list-style-type:none;
+list-style:none;
 }
-.sidebar ul li a {
+.sidebar ul li a{
     display: block;
     color:#333;
     padding: 5px 10px;

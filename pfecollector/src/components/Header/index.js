@@ -49,7 +49,7 @@ const Header = (props) => {
       variant="dark"
       style={{ zIndex: "1" , position : 'fixed' , width : '100%' , top : '0' , right : '0' }}
     >
-      <Container fluid>
+      <Container fluid >
         <Link to="/" className="navbar-brand">
           PFE COLLECTOR
         </Link>

@@ -1,21 +1,67 @@
-import React , { useEffect } from 'react'
+import React , { useEffect , useState } from 'react'
 //import moment from "moment";
-import { Container, Row , Col , Table , Pagination } from 'react-bootstrap'
-import { useDispatch , useSelector } from 'react-redux'
+import { Container, Row , Col , Table , Button , Pagination , Modal   } from 'react-bootstrap'
+import { useDispatch , useSelector  } from 'react-redux'
 import Layout from '../../components/Layout'
-import { getAllIdees } from '../../actions/idee.actions'
+import { getAllIdees , addIdee} from '../../actions/idee.actions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Input from '../../components/ui/input'
 import { faCoffee , faLightbulb , faPlusSquare , faCheckCircle , faBan , faSignInAlt } from '@fortawesome/free-solid-svg-icons'
 
 
 const Idees = (props) => {
+
+    //let user = [];
     const dispatch = useDispatch();
     useEffect( ()=>{
+        console.log('idees.js')
+        //console.log(window.Storage.Item("user"))
         dispatch(getAllIdees())
+        
     }, [])
-const idee =  useSelector(state => state.idee );
+const idee =  useSelector( state => state.idee );
+console.log("liste des idees => GET ALL IDEES")
+console.log(idee)
+//const auth =  useSelector( state => state.auth.user._id );
 
-const renderIdees = () => {
+const [ titre , setTitre ] = useState('');
+const [ description , setDescription ] = useState('');
+const [ iduser , setIdUser ] = useState('');
+console.log(" show user ")
+// console.log(auth)
+//const iduser =  ;
+
+
+const [show, setShow] = useState(false);
+// console.log("index idees")
+// console.log(idee)
+
+// function to show modal
+
+const handleClose = () => {
+   
+    const form = new FormData()
+    form.append('titre',titre)
+    form.append('description',description)
+    form.append('iduser',"qwertyqedcfs")
+    console.log(form)
+    //dispatch(addIdee(form))
+     const id = {
+         titre ,
+         description,
+         iduser : "qwertyqedcfs"
+     }
+    dispatch(addIdee(id))
+    //console.log(id)
+    setShow(false);
+} 
+  const handleShow = () => setShow(true);
+// function  to render idees
+
+const renderIdees = (idee) => {
+   
+    
+     //idees = Object.assign({}, idees)
     return(
         <Table responsive="sm" striped bordered hover>
         <thead>
@@ -33,26 +79,26 @@ const renderIdees = () => {
         <tbody>
             {
                 idee.idees.length > 0 ? 
-                idee.idees.map(idee =>
-                    <tr key={idee._id }>
-                    <td>1</td>
-                    <td>{idee.titre}</td>
-                    <td>{idee.description} </td>
-                    <td>{idee.iduser}</td>
-                    <td>
-                       { new Date(idee.createdAt).toLocaleDateString() } 
-                    </td>
-                    <td>
-                    <button class="btn btn-success mr-2">
+                idee.idees.map(sidee =>
+                     <tr key={sidee._id }>
+                     <td>1</td>
+                    <td>{sidee.titre}</td>
+                     <td>{sidee.description} </td>
+                     <td>{sidee.iduser}</td>
+                     <td>
+                        { new Date(sidee.createdAt).toLocaleDateString() } 
+                     </td>
+                     <td>
+                    <button className="btn btn-success mr-2">
                             <FontAwesomeIcon icon={faCheckCircle} />                            
                         </button>
                         
-                        <button class="btn btn-danger">
+                         <button className="btn btn-danger">
                             <FontAwesomeIcon icon={faBan} />
-                        </button>
-                    </td>
+                         </button>
+                     </td>
                 
-                </tr>  ) : null 
+                 </tr>  ) : null 
             }
                  
         </tbody>
@@ -87,10 +133,10 @@ const renderPagination =() => {
                 <Container>
                     <Row>
                         <Col md={12}>
-                            <div class="alert alert-primary" style={{ display: 'flex' , justifyContent : 'space-between' , padding: '20px' }}>
+                            <div className="alert alert-primary" style={{ display: 'flex' , justifyContent : 'space-between' , padding: '20px' }}>
                               
                                 <h4> <FontAwesomeIcon icon={faLightbulb} /> Liste des Idees </h4>
-                                <button class="btn btn-primary"> <FontAwesomeIcon icon={faPlusSquare} /> </button>
+                                <button className="btn btn-primary" onClick={handleShow}> <FontAwesomeIcon icon={faPlusSquare} /> </button>
                                
                                 
 
@@ -103,12 +149,36 @@ const renderPagination =() => {
                     <Row>
                         <Col>
                         {/* here the table */}
-                        { renderIdees() }
+                        { renderIdees(idee) }
                         { renderPagination() }
                         
                         </Col>
                     </Row>
                 </Container>
+
+                <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Ajouter une nouvelle idee</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <Input 
+                value={titre}
+                placeholder={'Nom de votre idee'}
+                onChange={(e)=> setTitre(e.target.value)}
+
+            />
+            <textarea value={description} placeholder={'Description pour votre idee ...'} className="form-control" onChange={(e)=> setDescription(e.target.value)}>
+
+            </textarea>
+            
+        </Modal.Body>
+        <Modal.Footer>
+         
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
             </Layout>
         </div>
     )

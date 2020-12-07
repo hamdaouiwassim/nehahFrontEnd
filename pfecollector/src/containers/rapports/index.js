@@ -35,7 +35,7 @@ const renderRapports = () => {
                     <td><button className="btn btn-primary"> Voir </button> </td>
                     <td>Oui</td>
                     <td>
-                       - bcq des fautes de francais 
+                       - beaucoup des fautes de français 
                     </td>
                     <td>
                     <button class="btn btn-success mr-2">
@@ -54,7 +54,7 @@ const renderRapports = () => {
                     <td><button className="btn btn-primary"> Voir </button> </td>
                     <td>Oui</td>
                     <td>
-                       - bcq des fautes de francais 
+                       - beaucoup des fautes de français 
                     </td>
                     <td>
                     <button class="btn btn-success mr-2">
@@ -73,7 +73,7 @@ const renderRapports = () => {
                     <td><button className="btn btn-primary"> Voir </button> </td>
                     <td>Oui</td>
                     <td>
-                       - bcq des fautes de francais 
+                       - beaucoup des fautes de français 
                     </td>
                     <td>
                     <button class="btn btn-success mr-2">

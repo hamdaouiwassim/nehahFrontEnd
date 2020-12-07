@@ -17,7 +17,7 @@ const Layout =  (props) => {
                                 <Row>
                                     <Col md={2} className="sidebar">
                                         <ul>
-                                            <li> <NavLink to={`/`}><FontAwesomeIcon icon={faListAlt} /> Accueil </NavLink> </li>
+                                            <li> <NavLink exact to={`/`}><FontAwesomeIcon icon={faListAlt} /> Accueil </NavLink> </li>
                                             <li> <NavLink to={`/idees`}><FontAwesomeIcon icon={faLightbulb} /> Idees </NavLink> </li>
                                             <li> <NavLink to={`/projects`}><FontAwesomeIcon icon={faListAlt} /> Projets </NavLink> </li>
                                             <li> <NavLink to={`/commentaires`}><FontAwesomeIcon icon={faComments} /> Commentaires </NavLink> </li>
