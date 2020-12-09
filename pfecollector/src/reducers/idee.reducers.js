@@ -2,6 +2,7 @@ import { ideesConstants } from "../actions/constants";
 const initialState ={
     idees : [],
     loading  : false,
+    message: null,
     error : null 
 }
 const builNewIdee = ( idees , idee ) => {
@@ -37,13 +38,37 @@ export default (state = initialState ,action) => {
             console.log(updatedIdees)
             state = {
                 ...state ,
-                idees : updatedIdees,
+               // idees : updatedIdees,
                 loading : false 
             }
         break;
         case ideesConstants.ADD_NEW_IDEE_FAILURE :
             state = {
                 ...initialState, 
+            }
+        break;
+        case ideesConstants.VALIDATE_IDEE_SUCCESS :
+            state = {
+                ...state,
+                message : action.payload.message 
+            }
+        break;
+        case ideesConstants.VALIDATE_IDEE_FAILURE :
+            state = {
+                ...state,
+                error : action.payload.error 
+            }
+        break;
+        case ideesConstants.DELETE_IDEE_SUCCESS :
+            state = {
+                ...state,
+                message : action.payload.message 
+            }
+        break;
+        case ideesConstants.DELETE_IDEE_FAILURE :
+            state = {
+                ...state,
+                error : action.payload.error 
             }
         break;
 

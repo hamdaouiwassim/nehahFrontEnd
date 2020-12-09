@@ -3,7 +3,7 @@ import React , { useEffect , useState } from 'react'
 import { Container, Row , Col , Table , Button , Pagination , Modal   } from 'react-bootstrap'
 import { useDispatch , useSelector  } from 'react-redux'
 import Layout from '../../components/Layout'
-import { getAllIdees , addIdee} from '../../actions/idee.actions'
+import { getAllIdees , addIdee, validateByAdmin , DeleteIdee} from '../../actions/idee.actions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Input from '../../components/ui/input'
 import { faCoffee , faLightbulb , faPlusSquare , faCheckCircle , faBan , faSignInAlt } from '@fortawesome/free-solid-svg-icons'
@@ -11,64 +11,62 @@ import { faCoffee , faLightbulb , faPlusSquare , faCheckCircle , faBan , faSignI
 
 const Idees = (props) => {
 
-    //let user = [];
     const dispatch = useDispatch();
     useEffect( ()=>{
-        console.log('idees.js')
-        //console.log(window.Storage.Item("user"))
         dispatch(getAllIdees())
+        
         
     }, [])
 const idee =  useSelector( state => state.idee );
-console.log("liste des idees => GET ALL IDEES")
-console.log(idee)
-//const auth =  useSelector( state => state.auth.user._id );
+const user = useSelector( state=> state.auth.user )
 
-const [ titre , setTitre ] = useState('');
+
+const [ name , setName ] = useState('');
 const [ description , setDescription ] = useState('');
-const [ iduser , setIdUser ] = useState('');
-console.log(" show user ")
-// console.log(auth)
-//const iduser =  ;
-
-
+const [ createdBy , setCreatedBy ] = useState(user._id);
 const [show, setShow] = useState(false);
-// console.log("index idees")
-// console.log(idee)
-
-// function to show modal
 
 const handleClose = () => {
-   
-    const form = new FormData()
-    form.append('titre',titre)
-    form.append('description',description)
-    form.append('iduser',"qwertyqedcfs")
-    console.log(form)
-    //dispatch(addIdee(form))
-     const id = {
-         titre ,
-         description,
-         iduser : "qwertyqedcfs"
-     }
-    dispatch(addIdee(id))
+    // //dispatch(addIdee(form))
+      const form = {
+          name ,
+          description,
+          createdBy ,
+      }
+     dispatch(addIdee(form))
+     dispatch(getAllIdees())
     //console.log(id)
     setShow(false);
 } 
   const handleShow = () => setShow(true);
 // function  to render idees
+const validateIdee = (ideeId) => {
+    dispatch(validateByAdmin(ideeId))
+    dispatch(getAllIdees())
+}
 
-const renderIdees = (idee) => {
+const deleteIdee = (ideeId) => {
+    /* eslint no-restricted-globals:0 */
+    if ( confirm(`voulez-vous vraiment supprimer cette idee`) ){
+        dispatch(DeleteIdee(ideeId))
+        dispatch(getAllIdees())
+    }
+    
+}
+
+const renderIdees = () => {
    
     
      //idees = Object.assign({}, idees)
     return(
+        <>
         <Table responsive="sm" striped bordered hover>
         <thead>
                     <tr>
                         <th>#</th>
                         <th>Nom</th>
                         <th>Description</th>
+                        <th>Etat</th>
                         <th>Utilisateur</th>
                         <th>Date d'ajout</th>
                         <th>Actions</th>
@@ -78,22 +76,23 @@ const renderIdees = (idee) => {
         </thead>
         <tbody>
             {
-                idee.idees.length > 0 ? 
-                idee.idees.map(sidee =>
+                idee.idees.idees.length > 0 ? 
+                idee.idees.idees.map((sidee , index ) =>
                      <tr key={sidee._id }>
-                     <td>1</td>
-                    <td>{sidee.titre}</td>
+                     <td>{ index+1 }</td>
+                    <td>{sidee.name}</td>
                      <td>{sidee.description} </td>
-                     <td>{sidee.iduser}</td>
+                    <td>{ sidee.stat }</td>
+                     <td>{sidee.createdBy.firstname } {sidee.createdBy.lastname }</td>
                      <td>
                         { new Date(sidee.createdAt).toLocaleDateString() } 
                      </td>
                      <td>
-                    <button className="btn btn-success mr-2">
+                    <button className="btn btn-success mr-2" onClick={ () => validateIdee(sidee._id) }>
                             <FontAwesomeIcon icon={faCheckCircle} />                            
                         </button>
                         
-                         <button className="btn btn-danger">
+                         <button className="btn btn-danger" onClick={ ()=> deleteIdee(sidee._id)}>
                             <FontAwesomeIcon icon={faBan} />
                          </button>
                      </td>
@@ -103,6 +102,7 @@ const renderIdees = (idee) => {
                  
         </tbody>
       </Table>
+      </>
     );
 }
 let active = 2;
@@ -149,7 +149,7 @@ const renderPagination =() => {
                     <Row>
                         <Col>
                         {/* here the table */}
-                        { renderIdees(idee) }
+                        { renderIdees() }
                         { renderPagination() }
                         
                         </Col>
@@ -162,9 +162,9 @@ const renderPagination =() => {
         </Modal.Header>
         <Modal.Body>
             <Input 
-                value={titre}
+                value={name}
                 placeholder={'Nom de votre idee'}
-                onChange={(e)=> setTitre(e.target.value)}
+                onChange={(e)=> setName(e.target.value)}
 
             />
             <textarea value={description} placeholder={'Description pour votre idee ...'} className="form-control" onChange={(e)=> setDescription(e.target.value)}>

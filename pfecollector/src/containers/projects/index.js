@@ -1,18 +1,50 @@
-import React , { useEffect } from 'react'
-import { Container, Row , Col , Table , Pagination } from 'react-bootstrap'
-import { useDispatch  } from 'react-redux'
+import React , { useEffect ,  useState } from 'react'
+import { Container, Row , Col , Table , Pagination , Modal , Button } from 'react-bootstrap'
+import { useDispatch , useSelector  } from 'react-redux'
 import Layout from '../../components/Layout'
-import { getAllProjects } from '../../actions/project.actions'
+import { getAllProjects , addProjet} from '../../actions/project.actions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faListAlt , faPlusSquare , faCheckCircle , faBan , faSignInAlt } from '@fortawesome/free-solid-svg-icons'
-
-
+import { faListAlt , faPlusSquare , faCheckCircle , faBan , faSignInAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
+import Input from '../../components/ui/input'
+import { NavLink } from 'react-router-dom'
 
 const Projects = (props) => {
     const dispatch = useDispatch();
     useEffect( ()=>{
         dispatch(getAllProjects())
     }, [])
+
+
+const projet =  useSelector( state => state.project );
+const user = useSelector( state=> state.auth.user )
+const [ name , setName ] = useState('');
+const [ description , setDescription ] = useState('');
+const [ createdBy , setCreatedBy ] = useState(user._id);
+const [ domaine , setDomaine ] = useState('');
+const [ depot , setDepot ] = useState('');
+const [ note , setNote ] = useState('');
+
+
+const [show, setShow] = useState(false);
+const handleClose = () => {
+    const form = {
+        name ,
+        description,
+        createdBy ,
+        domaine,
+        depot,
+        note
+    }
+   dispatch(addProjet(form))
+   dispatch(getAllProjects())
+   setName('')
+   setDescription('')
+   setDomaine('')
+   setNote('')
+   setDepot('')
+    setShow(false);
+} 
+const handleShow = () => setShow(true);
 
 const renderProjects = () => {
     return(
@@ -22,6 +54,7 @@ const renderProjects = () => {
                         <th>#</th>
                         <th>Nom</th>
                         <th>Description</th>
+                        <th>Etat</th>
                         <th>Utilisateur </th>
                         <th>Domaine</th>
                         <th>Date de depot</th>
@@ -32,21 +65,29 @@ const renderProjects = () => {
                     </tr>
         </thead>
         <tbody>
+        {
+                projet.projets.length > 0 ? 
+                projet.projets.map((sprojet , index ) =>
+                
                 <tr>
-                    <td>1</td>
-                    <td>PlateForme de gestion</td>
-                    <td>plateforme de gestion des rendez-vous </td>
-                    <td>Ahmed Helali</td>
+                    <td>{ index+1 }</td>
+                    <td>{ sprojet.name }</td>
+                    <td>{ sprojet.description } </td>
+                    <td>{ sprojet.stat } </td>
+                    <td>{ sprojet.createdBy.firstname } { sprojet.createdBy.lastname }</td>
                     <td>
-                       Informatique
+                       {sprojet.domaine}
                     </td>
                     <td>
-                       2019 
+                       {new Date(sprojet.depot).toLocaleDateString()}
                     </td>
                     <td>
-                       17.5 
+                      { sprojet.note }
                     </td>
                     <td>
+                    <button class="btn btn-success mr-2">
+                        <NavLink to={`/projet/show`}><FontAwesomeIcon icon={faEdit} /> </NavLink>
+                        </button>
                     <button class="btn btn-success mr-2">
                             <FontAwesomeIcon icon={faCheckCircle} />                            
                         </button>
@@ -57,56 +98,9 @@ const renderProjects = () => {
                     </td>
                 
                 </tr> 
-                <tr>
-                    <td>2</td>
-                    <td>Collection des papier</td>
-                    <td>projet de collection de papier  </td>
-                    <td>Mohamed Ben mrad</td>
-                    <td>
-                       Informatique de gestion
-                    </td>
-                    <td>
-                       2017
-                    </td>
-                    <td>
-                       13.5 
-                    </td>
-                    <td>
-                    <button class="btn btn-success mr-2">
-                            <FontAwesomeIcon icon={faCheckCircle} />                            
-                        </button>
-                        
-                        <button class="btn btn-danger">
-                            <FontAwesomeIcon icon={faBan} />
-                        </button>
-                    </td>
-                
-                </tr> 
-                <tr>
-                    <td>3</td>
-                    <td>Wather Mobile App</td>
-                    <td>Application mobile  </td>
-                    <td>Mariem safi</td>
-                    <td>
-                       Chimie
-                    </td>
-                    <td>
-                       2018 
-                    </td>
-                    <td>
-                       15 
-                    </td>
-                    <td>
-                    <button class="btn btn-success mr-2">
-                            <FontAwesomeIcon icon={faCheckCircle} />                            
-                        </button>
-                        
-                        <button class="btn btn-danger">
-                            <FontAwesomeIcon icon={faBan} />
-                        </button>
-                    </td>
-                
-                </tr> 
+                ) 
+                 : null }
+                 
         </tbody>
       </Table>
     );
@@ -139,7 +133,7 @@ const renderProjects = () => {
                         <Col md={12}>
                             <div className="alert alert-primary" style={{ display: 'flex' , justifyContent : 'space-between' , padding: '20px' }}>
                                 <h4><FontAwesomeIcon icon={faListAlt} />Liste des Projects </h4>
-                                <button class="btn btn-primary"> <FontAwesomeIcon icon={faPlusSquare} /> </button>
+                                <button class="btn btn-primary" onClick={handleShow}> <FontAwesomeIcon icon={faPlusSquare} /> </button>
 
 
                             </div>
@@ -155,6 +149,50 @@ const renderProjects = () => {
                         </Col>
                     </Row>
                 </Container>
+                <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Ajouter une nouvelle Projet</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <Input 
+                value={name}
+                placeholder={'Nom de votre projet'}
+                onChange={(e)=> setName(e.target.value)}
+
+            />
+            <textarea value={description} placeholder={'Description pour votre projet ...'} className="form-control" onChange={(e)=> setDescription(e.target.value)}>
+
+            </textarea>
+            <Input 
+                value={domaine}
+                placeholder={'Domaine de votre projet'}
+                onChange={(e)=> setDomaine(e.target.value)}
+
+            />
+             <Input 
+                value={depot}
+                type={'date'}
+                placeholder={'Date de depot votre projet'}
+                onChange={(e)=> setDepot(e.target.value)}
+
+            />
+             <Input 
+                value={note}
+                type={'number'}
+                placeholder={'Note de votre projet'}
+                onChange={(e)=> setNote(e.target.value)}
+
+            />
+
+            
+        </Modal.Body>
+        <Modal.Footer>
+         
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
             </Layout>
         </div>
     )

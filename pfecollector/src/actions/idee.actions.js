@@ -45,3 +45,43 @@ export const addIdee = (form) => {
     }
 
 } 
+
+export const validateByAdmin = (ideeId) => {
+    return async dispatch => {
+        dispatch({ type : ideesConstants.ADD_NEW_IDEE_REQUEST })
+        const res = await axios.get(`/idee/validate/`+ideeId)
+        if ( res.status === 200 ){
+            dispatch({ 
+                type : ideesConstants.VALIDATE_IDEE_SUCCESS ,
+                payload : {message : res.data.message }
+             })
+        }else{
+            dispatch({ 
+                type : ideesConstants.VALIDATE_IDEE_FAILURE ,
+                payload : res.data.error
+             })
+
+        }
+        console.log("add idee function")
+        console.log(res)
+    }
+} 
+
+export const DeleteIdee = (ideeId) => {
+    return async dispatch => {
+        const res = await axios.get(`idee/delete/`+ideeId);
+        if ( res.status === 200 ){
+            dispatch({ 
+                type : ideesConstants.DELETE_IDEE_SUCCESS ,
+                payload : { message : res.data.message }
+             })
+        }
+        else{
+            dispatch({ 
+                type : ideesConstants.DELETE_IDEE_FAILURE ,
+                payload : { error : res.data.error }
+             })
+        }
+        
+    } 
+}

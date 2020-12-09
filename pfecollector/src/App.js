@@ -5,7 +5,7 @@ import Signup from './containers/signup';
 import Home from './containers/home';
 import { Route,Switch } from 'react-router-dom';
 import PrivateRoute from './components/HOC/PrivateRoute'
-import { getInitialData, isUserLoggedIn } from './actions'
+import { getAllIdees, getInitialData, isUserLoggedIn } from './actions'
 import {  useDispatch , useSelector } from 'react-redux'
 import Idees from './containers/idees';
 import Projects from './containers/projects';
@@ -15,6 +15,7 @@ import Profile from './containers/profile';
 import Presentations from './containers/presentations';
 import Rapports from './containers/rapports';
 import Evaluations from './containers/evaluations';
+import ShowProject from './containers/admin/showproject';
 //import { getInitialData } from './actions/initialData.actions';
 function App() {
   const dispatch = useDispatch()
@@ -23,7 +24,7 @@ function App() {
     if(!auth.authenticate){
       dispatch(isUserLoggedIn())
     }
-    //dispatch(getInitialData());
+    dispatch(getAllIdees());
   
   
   },[])
@@ -43,6 +44,7 @@ function App() {
                 <PrivateRoute path="/rapports"  component={Rapports} />
                 <PrivateRoute path="/evaluations"  component={Evaluations} />
                 <PrivateRoute path="/profile"  component={Profile} />
+                <PrivateRoute path="/projet/show/:projectId"  component={ShowProject} />
                 <Route path="/signin" component={Signin} />
                 <Route path="/signup" component={Signup} />
             </Switch>

@@ -1,8 +1,8 @@
 import React , { useEffect } from 'react'
 import { Container, Row , Col , Table , Pagination } from 'react-bootstrap'
-import { useDispatch  } from 'react-redux'
+import { useDispatch , useSelector } from 'react-redux'
 import Layout from '../../components/Layout'
-import { getAllCommentaires } from '../../actions/commentaire.actions'
+import { getAllCommentaires , DeleteComment } from '../../actions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComments , faLightbulb , faPlusSquare , faCheckCircle , faBan , faSignInAlt } from '@fortawesome/free-solid-svg-icons'
 
@@ -12,11 +12,40 @@ const Commentaires = (props) => {
     useEffect( ()=>{
         dispatch(getAllCommentaires())
     }, [])
+const commentaire = useSelector(state => state.commentaire )
+const idees = useSelector(state => state.idee.idees.idees)
+const projets = useSelector(state => state.project.projets)
 
-const renderCommentaires = () => {
-    return(
-        <Table responsive="sm" striped bordered hover>
-        <thead>
+console.log(idees)
+const getIdeeName = (ideeId)=> {
+    for (var i = 0; i < idees.length; i++) {
+        if ( idees[i]._id === ideeId){
+            return idees[i].name
+        }
+      }
+      
+}
+const getProjetName = (projetId) => {
+    for (var i = 0; i < projets.length; i++) {
+        if ( projets[i]._id === projetId){
+            return projets[i].name
+        }
+      }
+}
+
+const deleteComment = (commentId) => {
+    //alert(commentId)
+        /* eslint no-restricted-globals:0 */
+        if ( confirm(`voulez-vous vraiment supprimer ce commentaire`) ){
+            dispatch(DeleteComment(commentId))
+            dispatch(getAllCommentaires())
+        }
+}
+
+    function renderCommentaires() {
+        return (
+            <Table responsive="sm" striped bordered hover>
+                <thead>
                     <tr>
                         <th>#</th>
                         <th>Commentaire</th>
@@ -25,80 +54,40 @@ const renderCommentaires = () => {
                         <th>Type </th>
                         <th>Date d'ajout</th>
                         <th>Actions</th>
-                        
-                        
+
+
                     </tr>
-        </thead>
-        <tbody>
-                <tr>
-                    <td>1</td>
-                    
-                    <td>plateforme de gestion des rendez-vous </td>
-                    <td>Ahmed Helali</td>
-                    <td>PlateForme de gestion</td>
-                    <td>Idee</td>
-                    <td>
-                       22/10/2019 
-                    </td>
-                    <td>
-                    <button class="btn btn-success mr-2">
-                            <FontAwesomeIcon icon={faCheckCircle} />                            
-                        </button>
-                        
-                        <button class="btn btn-danger">
-                            <FontAwesomeIcon icon={faBan} />
-                        </button>
-                    </td>
-                
-                </tr> 
-                <tr>
-                    <td>2</td>
-                    
-                    <td>projet de collection de papier  </td>
-                    <td>Mohamed Ben mrad</td>
-                    <td>Collection des papier</td>
-                    <td>Idee</td>
-                    <td>
-                       22/10/2019 
-                    </td>
-                    <td>
-                    <button class="btn btn-success mr-2">
-                            <FontAwesomeIcon icon={faCheckCircle} />                            
-                        </button>
-                        
-                        <button class="btn btn-danger">
-                            <FontAwesomeIcon icon={faBan} />
-                        </button>
-                    </td>
-                
-                </tr> 
-                <tr>
-                    <td>3</td>
-                    
-                    <td>Application mobile  </td>
-                    <td>Mariem safi</td>
-                    <td>Wather Mobile App</td>
-                    
-                    
-                    <td>Projet</td>
-                    <td>
-                       22/10/2019 
-                    </td>
-                    <td>
-                    <button class="btn btn-success mr-2">
-                            <FontAwesomeIcon icon={faCheckCircle} />                            
-                        </button>
-                        
-                        <button class="btn btn-danger">
-                            <FontAwesomeIcon icon={faBan} />
-                        </button>
-                    </td>
-                
-                </tr> 
-        </tbody>
-      </Table>
-    );
-}
+                </thead>
+                <tbody>
+                    {commentaire.commentaires.length > 0 ?
+                        commentaire.commentaires.map((scommentaire, index) => <tr key={scommentaire._id}>
+                            <td>{index + 1}</td>
+
+                            <td>{scommentaire.content}</td>
+                            <td>{scommentaire.createdBy.firstname} {scommentaire.createdBy.firstname} </td>
+                            <td>{scommentaire.type == 'idee' ? getIdeeName(scommentaire.attachment) : getProjetName(scommentaire.attachment)}</td>
+                            <td>{scommentaire.type}</td>
+                            <td>
+                                {new Date(scommentaire.createdAt).toLocaleDateString()}
+                            </td>
+                            <td>
+
+
+                                <button class="btn btn-danger" onClick={ ()=> deleteComment(scommentaire._id) }>
+                                    <FontAwesomeIcon icon={faBan} />
+                                </button>
+                            </td>
+
+                        </tr>
+                        )
+                        : null}
+
+
+
+                </tbody>
+            </Table>
+        )
+    }
 let active = 2;
 let items = [];
 for (let number = 1; number <= 5; number++) {
@@ -130,7 +119,7 @@ const renderPagination =() => {
                             <div class="alert alert-primary" style={{ display: 'flex' , justifyContent : 'space-between' , padding: '20px' }}>
                               
                                 <h4> <FontAwesomeIcon icon={faComments} /> Liste des Commentaires </h4>
-                                <button class="btn btn-primary"> <FontAwesomeIcon icon={faPlusSquare} /> </button>
+                                
                                
                                 
 
