@@ -26,6 +26,16 @@ export default (state = initialState ,action) => {
             ...state,
             error : action.payload.error
         }
+        case projetsConstants.GET_PROJET_SUCCESS : 
+        state = {
+            ...state,
+            projet : action.payload.projet
+        }
+        case projetsConstants.GET_PROJET_FAILURE : 
+        state = {
+            ...state,
+            error : action.payload.error
+        }
         default :
         console.log("default")
          

@@ -16,6 +16,10 @@ import Presentations from './containers/presentations';
 import Rapports from './containers/rapports';
 import Evaluations from './containers/evaluations';
 import ShowProject from './containers/admin/showproject';
+import IdeesUser from './containers/etudiant/idees'
+import UserProjects from './containers/etudiant/projets';
+import UserProject from './containers/etudiant/projet';
+import UserIdee from './containers/etudiant/idee';
 //import { getInitialData } from './actions/initialData.actions';
 function App() {
   const dispatch = useDispatch()
@@ -45,6 +49,10 @@ function App() {
                 <PrivateRoute path="/evaluations"  component={Evaluations} />
                 <PrivateRoute path="/profile"  component={Profile} />
                 <PrivateRoute path="/projet/show/:projectId"  component={ShowProject} />
+                <PrivateRoute path="/user/idees"  component={IdeesUser} />
+                <PrivateRoute path="/user/idee/:ideeId"  component={UserIdee} />
+                <PrivateRoute path="/user/projets"  component={UserProjects} />
+                <PrivateRoute path="/user/projet/:projectId"  component={UserProject} />
                 <Route path="/signin" component={Signin} />
                 <Route path="/signup" component={Signup} />
             </Switch>

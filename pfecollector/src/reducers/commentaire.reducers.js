@@ -11,7 +11,7 @@ export default (state = initialState ,action) => {
         case commentairesConstants.GET_ALL_COMMENTAIRES_SUCCESS :
         state = {
             ...state,
-            commentaires : action.payload.commentaire,
+            commentaires : action.payload.commentaire ,
             
         }
         break;
@@ -38,11 +38,25 @@ export default (state = initialState ,action) => {
                 loading : false 
             }
         break;
+        
         case commentairesConstants.ADD_NEW_COMMENTAIRE_FAILURE :
             state = {
                 ...initialState, 
             }
         break;
+        case commentairesConstants.GET_PROJET_COMMENTAIRES_SUCCESS :
+             state = {
+                ...state ,
+                commentaires : action.payload.commentaire 
+            }
+        break;
+        case commentairesConstants.GET_PROJET_COMMENTAIRES_FAILURE :
+             state = {
+                ...state ,
+                error : action.payload.error 
+            }
+        break;
+
    
         case commentairesConstants.DELETE_COMMENTAIRE_SUCCESS :
             state = {

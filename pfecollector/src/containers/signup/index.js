@@ -11,6 +11,7 @@ const Signup =  (props) => {
   const [lastname , setLastname ] = useState('');
   const [email , setEmail ] = useState('');
   const [password , setPassword ] = useState('');
+  const [ role , setRole ] = useState('Professionel')
   const [contactNumber , setContactNumber ] = useState('');
   const [error , setError ] = useState('');
   const dispatch = useDispatch()
@@ -82,6 +83,14 @@ const Signup =  (props) => {
                            
                            
                            />
+                 <Form.Group >
+                <Form.Label>Type de compte</Form.Label>
+                <Form.Control value={role} as="select" custom  onChange={(e) => {setRole(e.target.value)}}>
+                  <option selected >Professionel</option>
+                  <option>Etudiant</option>
+                  
+                </Form.Control>
+              </Form.Group>
                  <Input 
                            label="Contact number"
                            placeholder="Contact number ..."

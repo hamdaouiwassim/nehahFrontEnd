@@ -35,8 +35,8 @@ const Layout =  (props) => {
                 <Col md={2} className="sidebar">
                             <ul>
                                 <li> <NavLink exact to={`/`}><FontAwesomeIcon icon={faListAlt} /> Accueil </NavLink> </li>
-                                <li> <NavLink to={`/idees`}><FontAwesomeIcon icon={faLightbulb} /> Idees </NavLink> </li>
-                                <li> <NavLink to={`/projects`}><FontAwesomeIcon icon={faListAlt} /> Projets </NavLink> </li>
+                                <li> <NavLink to={`/user/idees`}><FontAwesomeIcon icon={faLightbulb} /> Idees </NavLink> </li>
+                                <li> <NavLink to={`/user/projets`}><FontAwesomeIcon icon={faListAlt} /> Projets </NavLink> </li>
                                 <li> <NavLink to={`/profile`}><FontAwesomeIcon icon={faUserCircle} /> Profile </NavLink> </li>
                             </ul>
                 </Col>)

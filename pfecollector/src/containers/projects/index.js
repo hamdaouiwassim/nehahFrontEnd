@@ -85,8 +85,8 @@ const renderProjects = () => {
                       { sprojet.note }
                     </td>
                     <td>
-                    <button class="btn btn-success mr-2">
-                        <NavLink to={`/projet/show`}><FontAwesomeIcon icon={faEdit} /> </NavLink>
+                    <button class="btn btn-secondary mr-2">
+                        <NavLink style={{color:'white'}} to={`/projet/show/`+sprojet._id}><FontAwesomeIcon icon={faEdit} /> </NavLink>
                         </button>
                     <button class="btn btn-success mr-2">
                             <FontAwesomeIcon icon={faCheckCircle} />                            
