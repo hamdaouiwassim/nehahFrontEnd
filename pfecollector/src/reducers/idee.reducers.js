@@ -1,6 +1,7 @@
 import { ideesConstants } from "../actions/constants";
 const initialState ={
     idees : [],
+    idee  : {},
     loading  : false,
     message: null,
     error : null 
@@ -66,6 +67,18 @@ export default (state = initialState ,action) => {
             }
         break;
         case ideesConstants.DELETE_IDEE_FAILURE :
+            state = {
+                ...state,
+                error : action.payload.error 
+            }
+        break;
+        case ideesConstants.GET_IDEE_SUCCESS :
+            state = {
+                ...state,
+                idee : action.payload.idee 
+            }
+        break;
+        case ideesConstants.GET_IDEE_FAILURE :
             state = {
                 ...state,
                 error : action.payload.error 

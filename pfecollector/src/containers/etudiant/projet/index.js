@@ -8,10 +8,10 @@ import {
   Link,
   useParams
 } from "react-router-dom";
-import { getProjet , getPresentation , getCommentsByProjets } from '../../../actions'
+import { getProjet , getPresentation , getCommentsByProjets , addCommentaire } from '../../../actions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Input from '../../../components/ui/input'
-import { faCheck, faComments, faEdit, faEye, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faComments, faEdit, faEye, faTrash, faUser } from '@fortawesome/free-solid-svg-icons'
 import { Container, Row , Col , Table , Button , Pagination , Modal , Form  } from 'react-bootstrap'
 
 
@@ -27,7 +27,29 @@ console.log(projectId)
 const dispatch = useDispatch()
 const projet = useSelector( state => state.project.projet )
 const presentation = useSelector( state => state.presentation.presentation )
-console.log(typeof projet[0])
+const user = useSelector( state=> state.auth.user )
+
+const [content,setContent] = useState('')
+const [attachment,setAttachment] = useState(projectId)
+const [type , setType] = useState('projet')
+const [createdBy , setCreatedBy] = useState(user._id)
+
+
+const addComment = () => {
+  // //dispatch(addIdee(form))
+    const form = {
+      content ,
+      attachment,
+      type,
+        createdBy ,
+    }
+   dispatch(addCommentaire(form))
+   dispatch(getCommentsByProjets(projectId))
+   setContent('')
+  
+} 
+
+
 useEffect(()=>{
   
   dispatch(getProjet(projectId))
@@ -36,8 +58,30 @@ useEffect(()=>{
   
 },[])
 
+const commentaire = useSelector(state=> state.commentaire)
+const renderCommentaires = () => {
+  return(
+  <>
+        {commentaire.commentaires.length > 0
+          ? commentaire.commentaires.map((scommentaire, index) => {
+              return (
+                <>
+                  
+                        <div>
+                        <FontAwesomeIcon icon={faUser} style={{ marginRight : '10px' }}/> 
+                          {scommentaire.createdBy.firstname} {scommentaire.createdBy.lastname} : 
+                          {scommentaire.content}
+                          </div>
+                        <hr />
+                       
+                </>
+              );
+            })
+          : null}
+      </>
+    );
 
-
+}
 
 
   return(
@@ -92,17 +136,19 @@ useEffect(()=>{
     <Row>
                 <Col md={11}>
                         <Input 
+                        value={content}
                         type={'text'}
                         placeholder={'laisser un commentaire'}
+                        onChange={ (e)=> setContent(e.target.value)}
                         />
                 </Col>
                 <Col md={1}>
-                        <Button style={{ marginTop : '25px' }}> <FontAwesomeIcon icon={faCheck} />  </Button>
+                        <Button onClick={ addComment } style={{ marginTop : '25px' }}> <FontAwesomeIcon icon={faCheck} />  </Button>
                 </Col>
     </Row>
     <hr />
 
-
+{ renderCommentaires() }
    
    </Layout>
    )

@@ -20,6 +20,8 @@ import IdeesUser from './containers/etudiant/idees'
 import UserProjects from './containers/etudiant/projets';
 import UserProject from './containers/etudiant/projet';
 import UserIdee from './containers/etudiant/idee';
+import MesIdees from './containers/professionel/mesidees';
+import MesProjets from './containers/professionel/mesprojets';
 //import { getInitialData } from './actions/initialData.actions';
 function App() {
   const dispatch = useDispatch()
@@ -50,6 +52,8 @@ function App() {
                 <PrivateRoute path="/profile"  component={Profile} />
                 <PrivateRoute path="/projet/show/:projectId"  component={ShowProject} />
                 <PrivateRoute path="/user/idees"  component={IdeesUser} />
+                <PrivateRoute path="/user/me/idees"  component={MesIdees} />
+                <PrivateRoute path="/user/me/projets"  component={MesProjets} />
                 <PrivateRoute path="/user/idee/:ideeId"  component={UserIdee} />
                 <PrivateRoute path="/user/projets"  component={UserProjects} />
                 <PrivateRoute path="/user/projet/:projectId"  component={UserProject} />

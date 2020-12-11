@@ -1,6 +1,7 @@
 import { commentairesConstants } from "../actions/constants";
 const initialState ={
     commentaires : [],
+    commentaire : {},
     loading  : false,
     message: null,
     error : null 
@@ -28,20 +29,19 @@ export default (state = initialState ,action) => {
                 loading : true 
             }
         break;
-        case commentairesConstants.ADD_NEW_COMMENTAIRE_SUCCESS :
-            //const updatedCommentaires = builNewCommentaire(state.commentaires,action.payload.idee)
-            // console.log("Updated Commentaires => : ")
-            // console.log(updatedCommentaires)
+        case commentairesConstants.ADD_COMMENTAIRE_SUCCESS :
+        
              state = {
                 ...state ,
-               // commentaires : updatedCommentaires,
-                loading : false 
+                commentaire : action.payload.createdCommentaire
+              
             }
         break;
         
-        case commentairesConstants.ADD_NEW_COMMENTAIRE_FAILURE :
+        case commentairesConstants.ADD_COMMENTAIRE_FAILURE :
             state = {
-                ...initialState, 
+                ...state,
+                error : action.payload.error
             }
         break;
         case commentairesConstants.GET_PROJET_COMMENTAIRES_SUCCESS :

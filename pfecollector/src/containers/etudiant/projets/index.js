@@ -21,6 +21,7 @@ const UserProjects = (props) => {
     dispatch(getAllProjects());
   }, []);
   const projet = useSelector(state => state.project);
+
   const renderProjects = () => {
     return (
       <>
@@ -77,7 +78,8 @@ const UserProjects = (props) => {
           <Row>
             
               {/* here the table */}
-              {renderProjects()}
+              {  renderProjects() }
+        
           
           </Row>
         </Container>

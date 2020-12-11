@@ -17,6 +17,7 @@ const Projects = (props) => {
 
 const projet =  useSelector( state => state.project );
 const user = useSelector( state=> state.auth.user )
+//
 const [ name , setName ] = useState('');
 const [ description , setDescription ] = useState('');
 const [ createdBy , setCreatedBy ] = useState(user._id);
@@ -69,7 +70,7 @@ const renderProjects = () => {
                 projet.projets.length > 0 ? 
                 projet.projets.map((sprojet , index ) =>
                 
-                <tr>
+                <tr key={index}>
                     <td>{ index+1 }</td>
                     <td>{ sprojet.name }</td>
                     <td>{ sprojet.description } </td>

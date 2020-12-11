@@ -1,6 +1,25 @@
 import axios from "../helpers"
 import { ideesConstants } from "./constants";
 
+export const getIdee = (ideeId) => {
+    return async dispatch => {
+        const res = await axios.get(`idee/`+ideeId);
+        if ( res.status === 200 ){ // succes de chargements des idees 
+            dispatch({
+                type : ideesConstants.GET_IDEE_SUCCESS ,
+                payload : { idee : res.data.idee }
+            })
+        }else{ // echec de chargements des idees
+            dispatch({
+                 type : ideesConstants.GET_IDEE_FAILURE ,
+                 payload : { error : res.data.error }
+            })
+        }
+
+
+    }
+}
+
 export const getAllIdees = () => {
     return async dispatch => {
         dispatch({ type : ideesConstants.GET_ALL_IDEES_REQUEST })
@@ -85,3 +104,5 @@ export const DeleteIdee = (ideeId) => {
         
     } 
 }
+
+

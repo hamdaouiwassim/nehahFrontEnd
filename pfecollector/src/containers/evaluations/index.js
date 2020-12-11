@@ -1,8 +1,8 @@
 import React , { useEffect } from 'react'
 import { Container, Row , Col , Table , Pagination } from 'react-bootstrap'
-import { useDispatch  } from 'react-redux'
+import { useDispatch, useSelector  } from 'react-redux'
 import Layout from '../../components/Layout'
-import { getAllEvaluations } from '../../actions/evaluations.actions'
+import { getAllEvaluations , DeleteEvaluation } from '../../actions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGavel , faLightbulb , faPlusSquare , faCheckCircle , faBan , faSignInAlt } from '@fortawesome/free-solid-svg-icons'
 
@@ -12,7 +12,14 @@ const Evaluations = (props) => {
     useEffect( ()=>{
         dispatch(getAllEvaluations())
     }, [])
-
+    const deleteEvaluation = (evaluationId) => {
+        /* eslint no-restricted-globals:0 */
+        if ( confirm(`voulez-vous vraiment supprimer cette evaluation`) ){
+        dispatch(DeleteEvaluation(evaluationId))
+        dispatch(getAllEvaluations());
+        }
+      }
+const evaluation = useSelector((state) => state.evaluation);
 const renderEvaluations = () => {
     return(
         <Table responsive="sm" striped bordered hover>
@@ -29,93 +36,40 @@ const renderEvaluations = () => {
                     </tr>
         </thead>
         <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>PlateForme de gestion</td>
-                    <td>Bien </td>
-                    <td>15</td>
-                    <td>
-                       Feedback
-                       <br /> 
-                       Feedback 
-                    </td>
-                    <td>
-                    <button class="btn btn-success mr-2">
-                            <FontAwesomeIcon icon={faCheckCircle} />                            
+        {evaluation.evaluations.length > 0
+            ? evaluation.evaluations.map((re, index) => {
+                return (
+                  <>
+                    <tr>
+                      <td>{index + 1}</td>
+                      <td>{re.projet.name}</td>
+                      <td>
+                          {re.mention}
+                      </td>
+                      <td>{re.note}</td>
+
+                      <td>{re.feedback}</td>
+                      <td>
+                        <button
+                          class="btn btn-danger"
+                          onClick={() => deleteEvaluation(re._id)}
+                        >
+                          <FontAwesomeIcon icon={faBan} />
                         </button>
-                        
-                        <button class="btn btn-danger">
-                            <FontAwesomeIcon icon={faBan} />
-                        </button>
-                    </td>
-                
-                </tr> 
-                <tr>
-                    <td>2</td>
-                    <td>Projet 3</td>
-                    <td>Tres Bien </td>
-                    <td>17</td>
-                    <td>
-                       Feedback
-                       <br /> 
-                       Feedback 
-                    </td>
-                    <td>
-                    <button class="btn btn-success mr-2">
-                            <FontAwesomeIcon icon={faCheckCircle} />                            
-                        </button>
-                        
-                        <button class="btn btn-danger">
-                            <FontAwesomeIcon icon={faBan} />
-                        </button>
-                    </td>
-                
-                </tr> 
-                <tr>
-                    <td>3</td>
-                    <td>Collection 1</td>
-                    <td>Assez Bien </td>
-                    <td>13</td>
-                    <td>
-                       Feedback
-                       <br /> 
-                       Feedback 
-                    </td>
-                    <td>
-                    <button class="btn btn-success mr-2">
-                            <FontAwesomeIcon icon={faCheckCircle} />                            
-                        </button>
-                        
-                        <button class="btn btn-danger">
-                            <FontAwesomeIcon icon={faBan} />
-                        </button>
-                    </td>
-                
-                </tr> 
+                      </td>
+                    </tr>
+                  </>
+                );
+              })
+            : null}
+            
+           
+           
         </tbody>
       </Table>
     );
 }
-let active = 2;
-let items = [];
-for (let number = 1; number <= 5; number++) {
-  items.push(
-    <Pagination.Item key={number} active={number === active}>
-      {number}
-    </Pagination.Item>,
-  );
-}
-const renderPagination =() => {
-        return (
-            <div>
-            <Pagination>{items}</Pagination>
-            <br />
-        
-            
-            </div>
-        
-        )
-} 
+
     
 
     return (
@@ -127,7 +81,7 @@ const renderPagination =() => {
                             <div class="alert alert-primary" style={{ display: 'flex' , justifyContent : 'space-between' , padding: '20px' }}>
                               
                                 <h4> <FontAwesomeIcon icon={faGavel} /> Liste des Evaluations </h4>
-                                <button class="btn btn-primary"> <FontAwesomeIcon icon={faPlusSquare} /> </button>
+                          
                                
                                 
 
@@ -141,7 +95,7 @@ const renderPagination =() => {
                         <Col>
                         {/* here the table */}
                         { renderEvaluations() }
-                        { renderPagination() }
+                       
                         
                         </Col>
                     </Row>

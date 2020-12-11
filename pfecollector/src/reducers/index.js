@@ -5,6 +5,8 @@ import projectReducer from './project.reducers'
 import utilisateurReducer from './utilisateur.reducers'
 import commentaireReducer from './commentaire.reducers'
 import presentationReducer from './presentation.reducers'
+import evaluationReducer from './evaluation.reducers'
+import rapportReducer from './rapport.reducers'
 import { combineReducers } from 'redux'
 
 
@@ -15,6 +17,9 @@ const rootReducer = combineReducers({
     project: projectReducer,
     utilisateur: utilisateurReducer,
     commentaire: commentaireReducer,
-    presentation: presentationReducer  
+    presentation: presentationReducer,
+    evaluation: evaluationReducer,
+    rapport: rapportReducer,
+
 })
 export default rootReducer;
