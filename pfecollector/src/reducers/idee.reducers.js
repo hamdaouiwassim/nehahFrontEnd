@@ -27,12 +27,24 @@ export default (state = initialState ,action) => {
             idees : action.payload.idees
         }
         break;
-        case ideesConstants.ADD_NEW_IDEE_REQUEST :
+        case ideesConstants.GET_MES_IDEES_FAILURE :
             state = {
                 ...state ,
-                loading : true 
+                error : action.payload.error 
             }
         break;
+        case ideesConstants.GET_MES_IDEES_SUCCESS :
+            state = {
+                ...state,
+                idees : action.payload.idees
+            }
+            break;
+            case ideesConstants.ADD_NEW_IDEE_REQUEST :
+                state = {
+                    ...state ,
+                    loading : true 
+                }
+            break;
         case ideesConstants.ADD_NEW_IDEE_SUCCESS :
             const updatedIdees = builNewIdee(state.idees,action.payload.idee)
             console.log("Updated Idees => : ")

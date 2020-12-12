@@ -31,7 +31,7 @@ const IdeesUser = (props) => {
               return (
                 <>
                 
-                    <Col md={4} >
+                    <Col md={4} className='mt-2' >
                             <Card >
                                 <Card.Body>
                                 <Card.Title>{sidee.name}</Card.Title>
@@ -48,7 +48,7 @@ const IdeesUser = (props) => {
                 </>
               );
             })
-          : null}
+          : null }
       </>
     );
   };

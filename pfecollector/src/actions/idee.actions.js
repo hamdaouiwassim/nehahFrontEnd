@@ -43,6 +43,29 @@ export const getAllIdees = () => {
     } 
 }
 
+export const getMesIdees = (userId) => {
+    return async dispatch => {
+        dispatch({ type : ideesConstants.GET_MES_IDEES_REQUEST })
+        const res = await axios.get(`idee/user/`+userId);
+        console.log("data here");
+        console.log(res.data);
+        if ( res.status === 200 ){ // succes de chargements des idees 
+            const  ideesList   = res.data;
+            console.log("List des idees ")
+            console.log(ideesList)
+            dispatch({
+                type : ideesConstants.GET_MES_IDEES_SUCCESS ,
+                payload : { idees : ideesList }
+            })
+        }else{ // echec de chargements des idees
+            dispatch({
+                 type : ideesConstants.GET_MES_IDEES_FAILURE ,
+                 payload : { error : res.data.error }
+            })
+        }
+    } 
+}
+
 export const addIdee = (form) => {
     return async dispatch => {
         dispatch({ type : ideesConstants.ADD_NEW_IDEE_REQUEST })
