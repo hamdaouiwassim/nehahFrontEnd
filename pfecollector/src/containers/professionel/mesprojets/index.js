@@ -2,7 +2,7 @@ import React, { useEffect , useState  } from 'react'
 import Layout from '../../../components/Layout'
 import { Container, Row , Col , Modal , Button , Table  } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { addProjet  } from '../../../actions'
+import { addProjet , getMesProjets } from '../../../actions'
 import { NavLink } from 'react-router-dom'
 import {  useSelector , useDispatch} from 'react-redux'
 import Input from '../../../components/ui/input'
@@ -15,14 +15,15 @@ import { faEdit , faListAlt , faPlusSquare , faCheckCircle , faBan , faSignInAlt
 **/
 
 const MesProjets = (props) => {
+    const projet =  useSelector( state => state.project );
+const user = useSelector( state=> state.auth.user )
   const dispatch = useDispatch();
   useEffect( ()=>{
-      //dispatch(getAllProjects())
+      dispatch(getMesProjets(user._id))
   }, [])
 
 
-const projet =  useSelector( state => state.project );
-const user = useSelector( state=> state.auth.user )
+
 //
 const [ name , setName ] = useState('');
 const [ description , setDescription ] = useState('');
@@ -43,7 +44,7 @@ const handleClose = () => {
       note
   }
  dispatch(addProjet(form))
- //dispatch(getAllProjects())
+ dispatch(getMesProjets(user._id))
  setName('')
  setDescription('')
  setDomaine('')
@@ -95,9 +96,7 @@ const renderProjects = () => {
                   <button class="btn btn-secondary mr-2">
                       <NavLink style={{color:'white'}} to={`/projet/show/`+sprojet._id}><FontAwesomeIcon icon={faEdit} /> </NavLink>
                       </button>
-                  <button class="btn btn-success mr-2">
-                          <FontAwesomeIcon icon={faCheckCircle} />                            
-                      </button>
+                  
                       
                       <button class="btn btn-danger">
                           <FontAwesomeIcon icon={faBan} />

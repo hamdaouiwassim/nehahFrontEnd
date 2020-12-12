@@ -15,6 +15,13 @@ export default (state = initialState ,action) => {
             projets : action.payload.projet
         }
         break;
+        case projetsConstants.GET_MES_PROJETS_SUCCESS :
+        state = {
+            ...state,
+            projets : action.payload.projet
+        }
+        break;
+        
         case projetsConstants.ADD_NEW_PROJET_SUCCESS : 
         state = {
             ...state,

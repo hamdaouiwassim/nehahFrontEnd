@@ -1,5 +1,6 @@
 import React from 'react'
-
+import { Jumbotron , Button, Image } from 'react-bootstrap'
+import { NavLink } from 'react-router-dom'
 import Layout from '../../components/Layout/index'
 import './style.css'
 
@@ -8,14 +9,22 @@ const Home =  (props) => {
        
                   
                             <Layout sidebar>
-                           
-                                {/* <Jumbotron style={{ margin: '5em' , background: '#fff' }} className="text-center">
-                                    <h1>Welcome Administration Panel </h1>
-                                    <p>
-                                    it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text,
-                                     and a search for 'lorem ipsum' will uncover many web sites still in their infancy.
-                                    </p>
-                                </Jumbotron> */}
+
+                                <Jumbotron>
+                                
+                                <Image src="uploads/home.jpg" fluid />
+                                <h1 className="mt-3" >PFECOLLECTOR </h1>
+                                <p>
+                                Est une application web permet d'aider les etudiants a constriure 
+                                        une idee de projet PFE ou bien memoire a travers la consultation des anciennes projets avec
+                                        les remarques , les notes , les documents.
+                                </p>
+                                <p>
+                                    <Button variant="primary" className="mr-3"><NavLink style={{ color : 'white'}} to={`user/idees`}>Consulter les idees</NavLink></Button>
+                                    <Button variant="success"><NavLink to={`user/idees`} style={{ color : 'white'}}>Consulter les projets</NavLink></Button>
+                                </p>
+                                </Jumbotron>
+                                  
                             </Layout>
                  
         

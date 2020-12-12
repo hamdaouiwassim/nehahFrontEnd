@@ -15,6 +15,19 @@ export const getAllProjects = () => {
 }
 
 
+export const getMesProjets = (userId) => {
+    return async dispatch => {
+        const res = await axios.get(`projet/user/`+userId);
+        if ( res.status === 200 ){
+            dispatch({ 
+                type : projetsConstants.GET_MES_PROJETS_SUCCESS ,
+                payload : { projet : res.data.projets }
+             })
+        }
+        console.log(res.data);
+    } 
+}
+
 export const addProjet = (form) => {
     return async dispatch => {
         //dispatch({ type : ideesConstants.ADD_NEW_IDEE_REQUEST })
