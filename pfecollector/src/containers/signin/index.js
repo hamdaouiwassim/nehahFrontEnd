@@ -55,7 +55,7 @@ const Signin = (props) => {
                            
                            />
               <Button variant="primary" type="submit">
-                Submit
+                Connecter
               </Button>
             </Form>
           </Col>

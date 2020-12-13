@@ -11,7 +11,8 @@ export default ( state = initState , action ) => {
         case userConstants.USER_REGISTER_REQUEST :
         state = {
             ...state,
-            loading : true
+           // loading : true
+           //error : action.payload.error
         }
         break;
         

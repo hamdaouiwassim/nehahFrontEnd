@@ -29,13 +29,13 @@ const Header = (props) => {
       <Nav>
         <li className="nav-item">
           <NavLink to="signin" className="nav-link">
-            Login
+            Connexion
           </NavLink>
         </li>
 
         <li className="nav-item">
           <NavLink to="signup" className="nav-link">
-            Register
+            Inscription
           </NavLink>
         </li>
       </Nav>
