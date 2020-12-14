@@ -30,6 +30,7 @@ const Signup = (props) => {
       username,
     };
     dispatch(signup(user));
+    return <Redirect to={`/signin`} />;
   };
   if (auth.authenticate) {
     return <Redirect to={`/`} />;

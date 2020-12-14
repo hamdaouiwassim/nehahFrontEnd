@@ -8,7 +8,7 @@ import {
   Link,
   useParams
 } from "react-router-dom";
-import { getProjet , getPresentation , getCommentsByProjets , addCommentaire } from '../../../actions'
+import { getProjet , getPresentation ,getRapport,getEvaluation , getCommentsByProjets , addCommentaire } from '../../../actions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Input from '../../../components/ui/input'
 import { faCheck, faComments, faEdit, faEye, faTrash, faUser } from '@fortawesome/free-solid-svg-icons'
@@ -23,10 +23,21 @@ import { Container, Row , Col , Table , Button , Pagination , Modal , Form  } fr
 const UserProject = (props) => {
 
 let { projectId } = useParams();
+useEffect(()=>{
+  
+  dispatch(getProjet(projectId))
+  dispatch(getPresentation(projectId))
+  dispatch(getCommentsByProjets(projectId))
+  dispatch(getRapport(projectId))
+  dispatch(getEvaluation(projectId))
+  
+},[])
 console.log(projectId)
 const dispatch = useDispatch()
 const projet = useSelector( state => state.project.projet )
 const presentation = useSelector( state => state.presentation.presentation )
+const rapport = useSelector( state => state.rapport.rapport )
+const evaluation = useSelector( state => state.evaluation.evaluation )
 const user = useSelector( state=> state.auth.user )
 
 const [content,setContent] = useState('')
@@ -50,13 +61,7 @@ const addComment = () => {
 } 
 
 
-useEffect(()=>{
-  
-  dispatch(getProjet(projectId))
-  dispatch(getPresentation(projectId))
-  dispatch(getCommentsByProjets(projectId))
-  
-},[])
+
 
 const commentaire = useSelector(state=> state.commentaire)
 const renderCommentaires = () => {
@@ -104,6 +109,7 @@ const renderCommentaires = () => {
        })): null
      }
     <h3> Presentation </h3>
+ 
     {
       presentation.length > 0 ? 
       presentation.map((pr)=> {
@@ -121,15 +127,56 @@ const renderCommentaires = () => {
           </>
         )
       }) 
-       : <p>Aucun fichier associer</p>
+        : <p>Aucun fichier associer</p>
     }
     
     <hr />
     <h3> Rapport </h3>
-    <p>Aucun fichier associer</p>
+    {
+      rapport.length > 0 ? 
+      rapport.map((pr)=> {
+        return (
+          <>
+            <div>
+            <p className='p-3' >
+                      { pr.feedback }
+                    </p>s
+                 { pr.visibilite == 'Oui' ?
+                  <div> 
+                   <button className="btn btn-success ml-2"><FontAwesomeIcon icon={faEye} /> voir la document de rapport  </button>              
+                  </div>  : <span> Le createur de presentation a limitee l'access pour ce fichier  </span>  } 
+                
+                
+             </div>
+          </>
+        )
+      }) 
+       : <p>Aucun fichier associer</p>
+    }
     <hr />
     <h3> Evaluation </h3>
-    <p>Aucun fichier associer</p>
+    {
+      evaluation.length > 0 ? 
+      evaluation.map((er)=> {
+        return (
+          <>
+            <div>
+
+                  <p className='p-3' >
+                      { er.feedback  }
+                      
+                      
+                      
+                    </p>
+                    <h5 className='p-3'> Note : { er.note } </h5>
+                      <h5 className='p-3'> Mention :{ er.mention }  </h5>
+                
+             </div>
+          </>
+        )
+      }) 
+       : <p>Aucun fichier associer</p>
+    }
     <hr />
     <h3> <FontAwesomeIcon icon={faComments} /> Commentaires </h3>
     <hr />
